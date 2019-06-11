@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>uk.ac.ebi.pride.archive</groupId>
-	<artifactId>spectral-archive</artifactId>
+	<artifactId>pride-spectra-archive</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>spectral-archive</name>
