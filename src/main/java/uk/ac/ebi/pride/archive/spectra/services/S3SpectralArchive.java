@@ -10,8 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PSMProvider;
 import uk.ac.ebi.pride.archive.spectra.model.ArchivePSM;
-import uk.ac.ebi.pride.archive.spectra.model.IArchivePSM;
 import uk.ac.ebi.pride.archive.spectra.utils.Constants;
 
 import java.io.BufferedReader;
@@ -38,13 +38,13 @@ public class S3SpectralArchive implements ISpectralArchive {
     @Value("${spectra.archive.s3.bucketname}")
     String bucketName;
 
-    public IArchivePSM writePSM(String usi, IArchivePSM psm) throws IOException {
+    public PSMProvider writePSM(String usi, PSMProvider psm) throws IOException {
 
         try {
-            if(psm.getUSI().startsWith(Constants.SPECTRUM_S3_HEADER)){
+            if(psm.getUsi().startsWith(Constants.SPECTRUM_S3_HEADER)){
                 String jsonStr = (new ObjectMapper()).writeValueAsString(psm);
                 s3Client.putObject(bucketName, usi, jsonStr);
-                log.debug("Spectrum save in the S3 backut -- " + psm.getSequence());
+                log.debug("Spectrum save in the S3 backut -- " + psm.getPeptideSequence());
             }else{
                 log.error("The spectrum usi should be started with prefix -- " + Constants.SPECTRUM_S3_HEADER);
             }
@@ -57,7 +57,7 @@ public class S3SpectralArchive implements ISpectralArchive {
         return psm;
     }
 
-    public IArchivePSM readPSM(String usi) throws IOException {
+    public PSMProvider readPSM(String usi) throws IOException {
         S3Object fullObject = s3Client.getObject(new GetObjectRequest(bucketName, usi));
         S3ObjectInputStream content = fullObject.getObjectContent();
         ArchivePSM psm = (new ObjectMapper()).readValue(getStringObject(content), ArchivePSM.class);
@@ -79,7 +79,7 @@ public class S3SpectralArchive implements ISpectralArchive {
         return fullObject.toString();
     }
 
-    public List<IArchivePSM> getAllPSMs(){
+    public List<PSMProvider> getAllPSMs(){
 
         log.info("Listing objects form S3 -- ");
         ObjectListing objectListing = s3Client.listObjects(new ListObjectsRequest().withBucketName(""));

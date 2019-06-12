@@ -1,6 +1,6 @@
 package uk.ac.ebi.pride.archive.spectra.services;
 
-import uk.ac.ebi.pride.archive.spectra.model.IArchivePSM;
+import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PSMProvider;
 
 import java.io.IOException;
 
@@ -15,6 +15,6 @@ import java.io.IOException;
  *
  */
 public interface ISpectralArchive {
-	
-	IArchivePSM writePSM(String usi, IArchivePSM psm) throws IOException;
+
+	PSMProvider writePSM(String usi, PSMProvider psm) throws IOException;
 }
