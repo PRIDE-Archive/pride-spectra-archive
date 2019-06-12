@@ -70,4 +70,9 @@ public class S3SpectralArchiveTest {
         IArchivePSM psm = spectralArchive.readPSM("mzspec:PXEXAMPLE:/Users/yperez/IdeaProjects/github-repo/pride-new/pride-spectra-archive/target/test-classes/F001257.mgf:indexNumber:9");
         log.info(psm.getUSI());
     }
+
+    @Test
+    public void deletePSM() throws IOException {
+        spectralArchive.deletePSM("mzspec:PXEXAMPLE:/Users/yperez/IdeaProjects/github-repo/pride-new/pride-spectra-archive/target/test-classes/F001257.mgf:indexNumber:9");
+    }
 }

@@ -64,6 +64,10 @@ public class S3SpectralArchive implements ISpectralArchive {
         return psm;
     }
 
+    public void deletePSM(String usi){
+        s3Client.deleteObject(new DeleteObjectRequest(bucketName, usi));
+    }
+
     private String getStringObject(S3ObjectInputStream binaryObject) throws IOException {
         // Read the text input stream one line at a time and display each line.
         BufferedReader reader = new BufferedReader(new InputStreamReader(binaryObject));
