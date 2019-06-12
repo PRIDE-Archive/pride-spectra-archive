@@ -8,9 +8,9 @@
 	<name>spectral-archive</name>
 
     <parent>
-        <groupId>uk.ac.ebi.pride.architectural</groupId>
-        <artifactId>pride-core</artifactId>
-        <version>1.0.1</version>
+        <groupId>org.uk.ac.ebi.pride.architectural</groupId>
+        <artifactId>pride-spring</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
 	<developers>
@@ -31,15 +31,17 @@
         <jmztab.version>3.0.8</jmztab.version>
         <px.submission.core.version>2.0.18</px.submission.core.version>
         <uk.ac.ebi.pride.archive.repo.version>1.0.2-springboot-SNAPSHOT</uk.ac.ebi.pride.archive.repo.version>
-        <uk.ac.ebi.pride.archive.mongodb.repo.version>1.0.2-springboot-SNAPSHOT</uk.ac.ebi.pride.archive.mongodb.repo.version>
-        <uk.ac.ebi.pride.archive.solr.indexes.version>1.0.2-springboot-SNAPSHOT</uk.ac.ebi.pride.archive.solr.indexes.version>
         <uk.ac.ebi.pride.archive.data-provider.version>1.0.0-SNAPSHOT</uk.ac.ebi.pride.archive.data-provider.version>
+        <uk.ac.ebi.pride.architectural-pride-tdd.version>1.0.3</uk.ac.ebi.pride.architectural-pride-tdd.version>
+        <uk.ac.ebi.pride.architectural-pride-spring.version>1.0.0-SNAPSHOT</uk.ac.ebi.pride.architectural-pride-spring.version>
         <uk.ac.ebi.pride.archive.utilities.version>2.0.19-SNAPSHOT</uk.ac.ebi.pride.archive.utilities.version>
         <archive.integration.version>0.0.3-SNAPSHOT</archive.integration.version>
         <uk.ac.ebi.pride.tools-jmzreader.version>2.0.6</uk.ac.ebi.pride.tools-jmzreader.version>
         <maven.test.skip>true</maven.test.skip>
         <pia.version>1.3.10</pia.version>
         <aws.version>1.11.569</aws.version>
+        <jackson.version>2.9.5</jackson.version>
+        <lombock.version>1.16.20</lombock.version>
     </properties>
 
     <dependencies>
@@ -50,6 +52,38 @@
             <groupId>uk.ac.ebi.pride.tools</groupId>
             <artifactId>jmzreader</artifactId>
             <version>${uk.ac.ebi.pride.tools-jmzreader.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>uk.ac.ebi.pride.architectural</groupId>
+            <artifactId>pride-spring</artifactId>
+            <version>${uk.ac.ebi.pride.architectural-pride-spring.version}</version>
+            <type>pom</type>
+        </dependency>
+
+        <!-- TDD -->
+        <dependency>
+            <groupId>uk.ac.ebi.pride.architectural</groupId>
+            <artifactId>pride-tdd</artifactId>
+            <version>${uk.ac.ebi.pride.architectural-pride-tdd.version}</version>
+            <type>pom</type>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -71,39 +105,12 @@
             <version>${uk.ac.ebi.pride.archive.utilities.version}</version>
         </dependency>
 
-
-        <!-- Mongo Configuration -->
         <dependency>
-            <groupId>uk.ac.ebi.pride.archive</groupId>
-            <artifactId>pride-mongodb-repo</artifactId>
-            <version>${uk.ac.ebi.pride.archive.mongodb.repo.version}</version>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-aws</artifactId>
+            <version>2.0.1.RELEASE</version>
         </dependency>
 
-        <!-- Solr Cloud Configuration -->
-        <dependency>
-            <groupId>uk.ac.ebi.pride.archive</groupId>
-            <artifactId>pride-solr-indexes</artifactId>
-            <version>${uk.ac.ebi.pride.archive.solr.indexes.version}</version>
-        </dependency>
-
-        <!-- This will be keep until is needed, The oracle dependency -->
-        <dependency>
-            <groupId>uk.ac.ebi.pride.archive</groupId>
-            <artifactId>archive-repo</artifactId>
-            <version>${uk.ac.ebi.pride.archive.repo.version}</version>
-        </dependency>
-
-        <!-- Archive integration library -->
-        <dependency>
-            <groupId>uk.ac.ebi.pride.archive</groupId>
-            <artifactId>archive-integration</artifactId>
-            <version>${archive.integration.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-batch</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -115,83 +122,16 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.4.194</version>
-        </dependency>
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>2.9.0</version>
-            <type>jar</type>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.6</version>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
 
-        <!-- mzTab conversion -->
-        <dependency>
-            <groupId>uk.ac.ebi.pride</groupId>
-            <artifactId>jmztab-modular-util</artifactId>
-            <version>${jmztab.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-classic</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!--proteomexchange submission core api-->
-        <dependency>
-            <groupId>uk.ac.ebi.pride</groupId>
-            <artifactId>px-submission-core</artifactId>
-            <version>${px.submission.core.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-classic</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!--&lt;!&ndash; mongo-psm-index-searc &ndash;&gt;-->
-        <!--<dependency>-->
-        <!--<groupId>uk.ac.ebi.pride</groupId>-->
-        <!--<artifactId>mongo-psm-index-search</artifactId>-->
-        <!--<version>${mongo.psm.index.search.version}</version>-->
-        <!--</dependency>-->
-        <!-- archive-repo -->
-
-        <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>oracle-thin</artifactId>
-            <version>11.2.0.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>6.0.9.Final</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -206,6 +146,16 @@
                 </includes>
             </testResource>
         </testResources>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>*.properties</include>
+                    <include>**/**</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

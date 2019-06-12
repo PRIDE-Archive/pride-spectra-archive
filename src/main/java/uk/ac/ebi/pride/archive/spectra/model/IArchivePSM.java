@@ -1,10 +1,8 @@
-package uk.ac.ebi.pride.archive.spectra;
+package uk.ac.ebi.pride.archive.spectra.model;
 
 import java.util.Map;
 
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
-import uk.ac.ebi.pride.integration.submission.service.IndexSpectrumService;
-import uk.ac.ebi.pride.tools.jmzreader.model.impl.ParamGroup;
 
 /**
  * Represents a spectrum in the
@@ -12,25 +10,16 @@ import uk.ac.ebi.pride.tools.jmzreader.model.impl.ParamGroup;
  * @author jg
  *
  */
-public interface ArchivePSM extends ISpectrum {
-
-	/** Unified Spectra Identifier **/
-	String getUSI();
+public interface IArchivePSM extends ISpectrum {
 
 	/** Returns the shown sequence (without modifications). */
 	String getSequence();
 
-	/** Returns the charge of the item. */
-	int getCharge();
-
 	/** Getter for the mass to charge value */
-	double getMass();
+	double getTheoreticalMass();
 
 	/** Getter for the missed cleavages */
 	int getMissedCleavages();
-
-	/** Getter for the retention time. */
-	Double getRetentionTime();
 
 	/** Getter for the source ID. */
 	String getSourceID();

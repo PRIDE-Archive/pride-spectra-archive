@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.archive.spectra;
+package uk.ac.ebi.pride.archive.spectra.model;
 
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 
@@ -6,15 +6,19 @@ import java.util.List;
 
 public interface ISpectrum {
 
-    double[] getMasses();
 
-    double[] getIntensities();
+    /** Unified Spectra Identifier **/
+    String getUSI();
+
+    double[] getSpectrumMasses();
+
+    double[] getSpectrumIntensities();
 
     int getMsLevel();
 
     List<CvParamProvider> getAdditional();
 
-    /** Mass psectrum capture mode CENTROID or PROFILE **/
+    /** Mass spectrum capture mode CENTROID or PROFILE **/
     String getMsMode();
 
     /** Lowest Observed Mz Value **/
@@ -32,8 +36,8 @@ public interface ISpectrum {
     /** Total ion count **/
     double getTic();
 
-    /** Rentention time or scan start time **/
-    double getRt();
+    /** Retention time or scan start time **/
+    double getRetentionTime();
 
     /** precursor charge **/
     int getPrecursorCharge();
