@@ -21,8 +21,17 @@ import java.util.stream.Collectors;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ArchivePSM implements PSMProvider {
 
+    @JsonProperty("projectAccession")
+    String projectAccession;
+
+    @JsonProperty("assayAccession")
+    String assayAccession;
+
     @JsonProperty("peptideSequence")
     String peptideSequence;
+
+    @JsonProperty("spectrumFile")
+    String spectrumFile;
 
     @JsonProperty("theoreticalMass")
     double theoreticalMass;
@@ -87,8 +96,11 @@ public class ArchivePSM implements PSMProvider {
     public ArchivePSM() {
     }
 
-    public ArchivePSM(String peptideSequence, double theoreticalMass, int missedCleavages, String sourceID, String spectrumTitle, double deltaMass, Collection<Modification> modifications, String usi, double[] masses, double[] intensities, int msLevel, List<CvParam> properties, String msMode, double lowestObservedMz, double highestObservedMz, double basePeakMz, double basePeakInt, double tic, double retentionTime, int precursorCharge, double precursorMz) {
+    public ArchivePSM(String projectAccession, String assayAccession, String peptideSequence, String spectrumFile, double theoreticalMass, int missedCleavages, String sourceID, String spectrumTitle, double deltaMass, Collection<Modification> modifications, String usi, double[] masses, double[] intensities, int msLevel, List<CvParam> properties, String msMode, double lowestObservedMz, double highestObservedMz, double basePeakMz, double basePeakInt, double tic, double retentionTime, int precursorCharge, double precursorMz) {
+        this.projectAccession = projectAccession;
+        this.assayAccession = assayAccession;
         this.peptideSequence = peptideSequence;
+        this.spectrumFile = spectrumFile;
         this.theoreticalMass = theoreticalMass;
         this.missedCleavages = missedCleavages;
         this.sourceID = sourceID;

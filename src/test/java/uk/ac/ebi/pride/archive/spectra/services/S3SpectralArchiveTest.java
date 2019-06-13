@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {AWS3Configuration.class})
 @Slf4j
@@ -36,7 +34,7 @@ public class S3SpectralArchiveTest {
     private File sourceFile;
 
     @Autowired
-    S3SpectralArchive spectralArchive;
+    S3SpectralArchive  spectralArchive;
 
     @Before
     public void setUp() throws Exception {
@@ -85,19 +83,36 @@ public class S3SpectralArchiveTest {
 
     @Test
     public void getAllPSMs() {
-        for(PSMProvider spectrum: spectralArchive.getAllPSMs()){
-            log.info("Spectrum -- " + spectrum.getUsi());
-        }
+//        for(PSMProvider spectrum: spectralArchive.getAllPSMs()){
+//            log.info("Spectrum -- " + spectrum.getUsi());
+//        }
     }
 
     @Test
     public void readPSM() throws IOException {
-        PSMProvider psm = spectralArchive.readPSM("mzspec:PXEXAMPLE:/Users/yperez/IdeaProjects/github-repo/pride-new/pride-spectra-archive/target/test-classes/F001257.mgf:indexNumber:9");
+        PSMProvider psm = spectralArchive.readPSM("mzspec:PXD000001:PRIDE_Exp_Complete_Ac_22134.xml:scan:3782");
         log.info(psm.getUsi());
     }
 
     @Test
     public void deletePSM() throws IOException {
         spectralArchive.deletePSM("mzspec:PXEXAMPLE:/Users/yperez/IdeaProjects/github-repo/pride-new/pride-spectra-archive/target/test-classes/F001257.mgf:indexNumber:9");
+    }
+
+    @Test
+    public void deletePSMs(){
+        List<String> keys = new ArrayList<>();
+        for(Spectrum spectrum: mgfFile.getMs2QueryIterator()) {
+            spectralArchive.deletePSM("mzspec:" + "PXEXAMPLE:" + sourceFile.getAbsolutePath() + ":indexNumber:" + spectrum.getId());
+        }
+    }
+
+    @Test
+    public void getBucketObjectSummaries() {
+        List<String> summary = spectralArchive.getPsmsKeys();
+        for(String objectSummary: summary){
+            log.info(objectSummary);
+            spectralArchive.deletePSM(objectSummary);
+        }
     }
 }

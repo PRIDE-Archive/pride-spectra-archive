@@ -5,6 +5,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -29,10 +30,9 @@ public class AWS3Configuration {
     @Value("${spectra.archive.s3.bucketname}")
     String bucketName;
 
-    AmazonS3 s3Client;
-
     @Bean
-    AmazonS3 amazonS3Client(){
+    @Qualifier("s3Client")
+    AmazonS3 s3Client(){
 
         BasicAWSCredentials awsCreds = new BasicAWSCredentials(this.s3AccessKeyId, this.s3SecretAccessKey);
 
@@ -42,12 +42,10 @@ public class AWS3Configuration {
 //                .enableAccelerateMode()
 //                .build();
 
-        this.s3Client = AmazonS3ClientBuilder.standard()
+        return  AmazonS3ClientBuilder.standard()
                 .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("https://s3.embassy.ebi.ac.uk/"+ bucketName, "eu-west-2"))
                 .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
                 .withPathStyleAccessEnabled(true)
                 .build();
-
-        return s3Client;
     }
 }
