@@ -96,7 +96,7 @@ public class S3SpectralArchiveTest {
 
     @Test
     public void deletePSM() throws IOException {
-        spectralArchive.deletePSM("mzspec:PXEXAMPLE:/Users/yperez/IdeaProjects/github-repo/pride-new/pride-spectra-archive/target/test-classes/F001257.mgf:indexNumber:9");
+        spectralArchive.deletePSM("ebi-pride/Volumes/yasset_data/QC_20140521_1.mzML");
     }
 
     @Test

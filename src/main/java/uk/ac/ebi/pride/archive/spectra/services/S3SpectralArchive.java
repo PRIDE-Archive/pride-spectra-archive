@@ -69,8 +69,11 @@ public class S3SpectralArchive implements ISpectralArchive {
     }
 
     public void deletePSM(String usi) {
-        if(usi.startsWith(Constants.SPECTRUM_S3_HEADER))
+        if(usi.contains(Constants.SPECTRUM_S3_HEADER)){
+            if(usi.startsWith(bucketName+"/"))
+                usi = usi.replace(bucketName + "/", "");
             s3Client.deleteObject(new DeleteObjectRequest(bucketName, usi));
+        }
     }
 
     private String getStringObject(S3ObjectInputStream binaryObject) throws IOException {
