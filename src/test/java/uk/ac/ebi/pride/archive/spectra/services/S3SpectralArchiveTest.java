@@ -95,7 +95,7 @@ public class S3SpectralArchiveTest {
     }
 
     @Test
-    public void deletePSM() throws IOException {
+    public void deletePSM() {
         spectralArchive.deletePSM("ebi-pride/Volumes/yasset_data/QC_20140521_1.mzML");
     }
 
@@ -110,9 +110,9 @@ public class S3SpectralArchiveTest {
     @Test
     public void getBucketObjectSummaries() {
         List<String> summary = spectralArchive.getPsmsKeys();
+        log.debug(String.valueOf(summary.size()));
         for(String objectSummary: summary){
             log.info(objectSummary);
-            spectralArchive.deletePSM(objectSummary);
         }
     }
 }

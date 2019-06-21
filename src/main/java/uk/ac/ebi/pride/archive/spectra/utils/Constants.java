@@ -1,5 +1,9 @@
 package uk.ac.ebi.pride.archive.spectra.utils;
 
+import uk.ac.ebi.pride.utilities.util.Triple;
+
+import java.util.Optional;
+
 public class Constants {
 
     public static String SPECTRUM_S3_HEADER = "mzspec:";

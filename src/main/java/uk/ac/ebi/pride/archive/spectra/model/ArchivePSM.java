@@ -93,10 +93,13 @@ public class ArchivePSM implements PSMProvider {
     @JsonProperty("precursorMz")
     double precursorMz;
 
+    @JsonProperty("isDecoy")
+    Boolean isDecoy;
+
     public ArchivePSM() {
     }
 
-    public ArchivePSM(String projectAccession, String assayAccession, String peptideSequence, String spectrumFile, double theoreticalMass, int missedCleavages, String sourceID, String spectrumTitle, double deltaMass, Collection<Modification> modifications, String usi, double[] masses, double[] intensities, int msLevel, List<CvParam> properties, String msMode, double lowestObservedMz, double highestObservedMz, double basePeakMz, double basePeakInt, double tic, double retentionTime, int precursorCharge, double precursorMz) {
+    public ArchivePSM(String projectAccession, String assayAccession, String peptideSequence, String spectrumFile, double theoreticalMass, int missedCleavages, String sourceID, String spectrumTitle, double deltaMass, Collection<Modification> modifications, String usi, double[] masses, double[] intensities, int msLevel, List<CvParam> properties, String msMode, double lowestObservedMz, double highestObservedMz, double basePeakMz, double basePeakInt, double tic, double retentionTime, int precursorCharge, double precursorMz, Boolean isDecoy) {
         this.projectAccession = projectAccession;
         this.assayAccession = assayAccession;
         this.peptideSequence = peptideSequence;
@@ -121,6 +124,7 @@ public class ArchivePSM implements PSMProvider {
         this.retentionTime = retentionTime;
         this.precursorCharge = precursorCharge;
         this.precursorMz = precursorMz;
+        this.isDecoy = isDecoy;
     }
 
     @Override

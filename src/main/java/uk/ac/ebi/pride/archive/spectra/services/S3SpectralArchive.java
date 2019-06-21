@@ -87,17 +87,6 @@ public class S3SpectralArchive implements ISpectralArchive {
         return fullObject.toString();
     }
 
-//    public List<PSMProvider> getAllPSMs(){
-//
-//        log.info("Listing objects form S3 -- ");
-//        ObjectListing objectListing = s3Client.listObjects(new ListObjectsRequest().withBucketName(""));
-//        for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
-//            log.info(" - " + objectSummary.getKey() + "  " + "(size = " + objectSummary.getSize() + ")");
-//        }
-//        return Collections.EMPTY_LIST;
-//
-//    }
-
     private List<S3ObjectSummary> getBucketObjectSummaries() {
 
         List<S3ObjectSummary> s3ObjectSummaries = new ArrayList<S3ObjectSummary>();
