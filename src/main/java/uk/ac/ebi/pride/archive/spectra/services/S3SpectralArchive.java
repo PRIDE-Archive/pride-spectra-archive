@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PSMProvider;
-import uk.ac.ebi.pride.archive.spectra.model.ArchivePSM;
+import uk.ac.ebi.pride.archive.spectra.model.ArchiveSpectrum;
 import uk.ac.ebi.pride.archive.spectra.utils.Constants;
 
 import java.io.BufferedReader;
@@ -64,7 +64,7 @@ public class S3SpectralArchive implements ISpectralArchive {
     public PSMProvider readPSM(String usi) throws IOException {
         S3Object fullObject = s3Client.getObject(new GetObjectRequest(bucketName, usi));
         S3ObjectInputStream content = fullObject.getObjectContent();
-        ArchivePSM psm = (new ObjectMapper()).readValue(getStringObject(content), ArchivePSM.class);
+        ArchiveSpectrum psm = (new ObjectMapper()).readValue(getStringObject(content), ArchiveSpectrum.class);
         return psm;
     }
 
@@ -87,9 +87,13 @@ public class S3SpectralArchive implements ISpectralArchive {
         return fullObject.toString();
     }
 
+    /**
+     * This method is really expensive, because it will try to retrieve all the objects from the S3
+     * @return List of all objects in the S3
+     */
     private List<S3ObjectSummary> getBucketObjectSummaries() {
 
-        List<S3ObjectSummary> s3ObjectSummaries = new ArrayList<S3ObjectSummary>();
+        List<S3ObjectSummary> s3ObjectSummaries = new ArrayList<>();
 
         try {
             ListObjectsRequest listObjectsRequest = new ListObjectsRequest().withBucketName("");
@@ -124,7 +128,7 @@ public class S3SpectralArchive implements ISpectralArchive {
     }
 
     public List<String> getPsmsKeys(){
-        return getBucketObjectSummaries().stream().map(x -> x.getKey()).collect(Collectors.toList());
+        return getBucketObjectSummaries().stream().map(S3ObjectSummary::getKey).collect(Collectors.toList());
     }
 
     @Deprecated

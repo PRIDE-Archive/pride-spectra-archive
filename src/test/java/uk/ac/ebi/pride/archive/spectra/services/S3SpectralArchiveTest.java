@@ -3,6 +3,7 @@ package uk.ac.ebi.pride.archive.spectra.services;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PSMProvider;
 import uk.ac.ebi.pride.archive.spectra.configs.AWS3Configuration;
-import uk.ac.ebi.pride.archive.spectra.model.ArchivePSM;
+import uk.ac.ebi.pride.archive.spectra.model.ArchiveSpectrum;
 import uk.ac.ebi.pride.archive.spectra.model.CvParam;
 import uk.ac.ebi.pride.tools.jmzreader.model.Spectrum;
 import uk.ac.ebi.pride.tools.mgf_parser.MgfFile;
@@ -66,7 +67,7 @@ public class S3SpectralArchiveTest {
                     .collect(Collectors.toList())
             );
 
-            ArchivePSM psm = ArchivePSM.builder()
+            ArchiveSpectrum psm = ArchiveSpectrum.builder()
                     .msLevel(spectrum.getMsLevel())
                     .masses(masses)
                     .intensities(intensities)
@@ -96,7 +97,7 @@ public class S3SpectralArchiveTest {
 
     @Test
     public void deletePSM() {
-        spectralArchive.deletePSM("ebi-pride/Volumes/yasset_data/QC_20140521_1.mzML");
+        spectralArchive.s3Client.deleteObject("ebi-pride","Volumes/yasset_data/QC_20140521_1.mzML");
     }
 
     @Test
@@ -111,8 +112,26 @@ public class S3SpectralArchiveTest {
     public void getBucketObjectSummaries() {
         List<String> summary = spectralArchive.getPsmsKeys();
         log.debug(String.valueOf(summary.size()));
-        for(String objectSummary: summary){
+        summary.parallelStream().forEach(objectSummary ->{
             log.info(objectSummary);
-        }
+        });
+    }
+
+    @Test
+    public void numberOfObjects() {
+        List<String> summary = spectralArchive.getPsmsKeys();
+        log.info(String.valueOf(summary.size()));
+    }
+
+
+
+    @Test
+    @Ignore
+    public void deleteAllObjects() {
+        List<String> summary = spectralArchive.getPsmsKeys();
+        log.debug(String.valueOf(summary.size()));
+        summary.parallelStream().forEach(objectSummary ->{
+            spectralArchive.deletePSM(objectSummary);
+        });
     }
 }
