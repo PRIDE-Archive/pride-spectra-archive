@@ -6,9 +6,11 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Builder;
 import lombok.Data;
+import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PSMProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PeptideSequenceProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.spectra.SpectrumProvider;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -39,25 +41,25 @@ public class ArchiveSpectrum implements PSMProvider {
     String spectrumTitle;
 
     @JsonProperty("masses")
-    double[] masses;
+    Double[] masses;
 
     @JsonProperty("intensities")
-    double[] intensities;
+    Double[] intensities;
 
     @JsonProperty("numPeaks")
-    int numPeaks;
+    Integer numPeaks;
 
     @JsonProperty("msLevel")
-    int msLevel;
+    Integer msLevel;
 
     @JsonProperty("precursorCharge")
-    int precursorCharge;
+    Integer precursorCharge;
 
     @JsonProperty("precursorMz")
-    double precursorMz;
+    Double precursorMz;
 
     @JsonProperty("retentionTime")
-    double retentionTime;
+    Double retentionTime;
 
     @JsonProperty("properties")
     List<CvParam> properties;
@@ -68,7 +70,7 @@ public class ArchiveSpectrum implements PSMProvider {
     String peptideSequence;
 
     @JsonProperty("missedCleavages")
-    int missedCleavages;
+    Integer missedCleavages;
 
     @JsonProperty("modifications")
     Collection<Modification> modifications;
@@ -79,9 +81,15 @@ public class ArchiveSpectrum implements PSMProvider {
     @JsonProperty("isDecoy")
     Boolean isDecoy;
 
+    @JsonProperty("qualityEstimationMethods")
+    private List<CvParam> qualityEstimationMethods;
+
+    @JsonProperty("isValid")
+    private Boolean isValid;
+
     public ArchiveSpectrum() { }
 
-    public ArchiveSpectrum(String usi, String projectAccession, String assayAccession, String spectrumFile, String sourceID, String spectrumTitle, double[] masses, double[] intensities, int numPeaks, int msLevel, int precursorCharge, double precursorMz, double retentionTime, List<CvParam> properties, String peptideSequence, int missedCleavages, Collection<Modification> modifications, List<String> annotations, Boolean isDecoy) {
+    public ArchiveSpectrum(String usi, String projectAccession, String assayAccession, String spectrumFile, String sourceID, String spectrumTitle, Double[] masses, Double[] intensities, Integer numPeaks, Integer msLevel, Integer precursorCharge, Double precursorMz, Double retentionTime, List<CvParam> properties, String peptideSequence, Integer missedCleavages, Collection<Modification> modifications, List<String> annotations, Boolean isDecoy, List<CvParam> qualityEstimationMethods, Boolean isValid) {
         this.usi = usi;
         this.projectAccession = projectAccession;
         this.assayAccession = assayAccession;
@@ -101,6 +109,8 @@ public class ArchiveSpectrum implements PSMProvider {
         this.modifications = modifications;
         this.annotations = annotations;
         this.isDecoy = isDecoy;
+        this.qualityEstimationMethods = qualityEstimationMethods;
+        this.isValid = isValid;
     }
 
     @Override
@@ -117,9 +127,19 @@ public class ArchiveSpectrum implements PSMProvider {
 
     @Override
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    public int getNumberModifiedSites() {
+    public Integer getNumberModifiedSites() {
         return modifications.size();
     }
 
+    @Override
+    public Boolean isDecoy() {
+        return isDecoy;
+    }
 
+
+    @Override
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    public Collection<? extends CvParamProvider> getAttributes() {
+        return properties;
+    }
 }

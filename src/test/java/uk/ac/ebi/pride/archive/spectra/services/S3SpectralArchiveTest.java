@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {AWS3Configuration.class})
 @Slf4j
-@TestPropertySource(locations = "classpath:tes-application.properties")
+@TestPropertySource(locations = "classpath:test-application.properties")
 public class S3SpectralArchiveTest {
 
     private MgfFile mgfFile = new MgfFile();
@@ -50,10 +50,11 @@ public class S3SpectralArchiveTest {
     }
 
     @Test
+    @Ignore
     public void writePSM() throws IOException {
         for(Spectrum spectrum: mgfFile.getMs2QueryIterator()){
-            double[] masses = new double[spectrum.getPeakList().size()];
-            double[] intensities = new double[spectrum.getPeakList().size()];
+            Double[] masses = new Double[spectrum.getPeakList().size()];
+            Double[] intensities = new Double[spectrum.getPeakList().size()];
             int count = 0;
             for(Map.Entry entry: spectrum.getPeakList().entrySet()){
                 masses[count] = (Double)entry.getKey();
@@ -90,6 +91,7 @@ public class S3SpectralArchiveTest {
     }
 
     @Test
+    @Ignore
     public void readPSM() throws IOException {
         PSMProvider psm = spectralArchive.readPSM("mzspec:PXD000001:PRIDE_Exp_Complete_Ac_22134.xml:scan:3782");
         log.info(psm.getUsi());
