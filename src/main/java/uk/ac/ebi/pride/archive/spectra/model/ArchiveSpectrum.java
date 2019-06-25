@@ -142,4 +142,9 @@ public class ArchiveSpectrum implements PSMProvider {
     public Collection<? extends CvParamProvider> getAttributes() {
         return properties;
     }
+
+    @Override
+    public Boolean isValid() {
+        return isValid;
+    }
 }
