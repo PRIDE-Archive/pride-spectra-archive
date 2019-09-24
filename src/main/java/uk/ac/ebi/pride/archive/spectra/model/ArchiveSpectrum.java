@@ -9,6 +9,7 @@ import lombok.Data;
 import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PSMProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PeptideSequenceProvider;
+import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.spectra.SpectrumProvider;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 
@@ -147,4 +148,6 @@ public class ArchiveSpectrum implements PSMProvider {
     public Boolean isValid() {
         return isValid;
     }
+
+
 }

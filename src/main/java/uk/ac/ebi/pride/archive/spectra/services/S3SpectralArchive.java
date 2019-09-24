@@ -7,6 +7,7 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,9 @@ public class S3SpectralArchive implements ISpectralArchive {
     public PSMProvider readPSM(String usi) throws IOException {
         S3Object fullObject = s3Client.getObject(new GetObjectRequest(bucketName, usi));
         S3ObjectInputStream content = fullObject.getObjectContent();
-        ArchiveSpectrum psm = (new ObjectMapper()).readValue(getStringObject(content), ArchiveSpectrum.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
+        ArchiveSpectrum psm = objectMapper.readValue(getStringObject(content), ArchiveSpectrum.class);
         return psm;
     }
 
