@@ -6,11 +6,9 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.Builder;
 import lombok.Data;
-import uk.ac.ebi.pride.archive.dataprovider.common.Tuple;
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PSMProvider;
-import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PeptideSequenceProvider;
-import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModificationProvider;
-import uk.ac.ebi.pride.archive.dataprovider.data.spectra.SpectrumProvider;
+import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModification;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
 import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 
 import java.util.*;
@@ -74,7 +72,7 @@ public class ArchiveSpectrum implements PSMProvider {
     Integer missedCleavages;
 
     @JsonProperty("modifications")
-    Collection<Modification> modifications;
+    Collection<IdentifiedModification> modifications;
 
     @JsonProperty("annotations")
     List<String> annotations;
@@ -90,7 +88,7 @@ public class ArchiveSpectrum implements PSMProvider {
 
     public ArchiveSpectrum() { }
 
-    public ArchiveSpectrum(String usi, String projectAccession, String assayAccession, String spectrumFile, String sourceID, String spectrumTitle, Double[] masses, Double[] intensities, Integer numPeaks, Integer msLevel, Integer precursorCharge, Double precursorMz, Double retentionTime, List<CvParam> properties, String peptideSequence, Integer missedCleavages, Collection<Modification> modifications, List<String> annotations, Boolean isDecoy, List<CvParam> qualityEstimationMethods, Boolean isValid) {
+    public ArchiveSpectrum(String usi, String projectAccession, String assayAccession, String spectrumFile, String sourceID, String spectrumTitle, Double[] masses, Double[] intensities, Integer numPeaks, Integer msLevel, Integer precursorCharge, Double precursorMz, Double retentionTime, List<CvParam> properties, String peptideSequence, Integer missedCleavages, Collection<IdentifiedModification> modifications, List<String> annotations, Boolean isDecoy, List<CvParam> qualityEstimationMethods, Boolean isValid) {
         this.usi = usi;
         this.projectAccession = projectAccession;
         this.assayAccession = assayAccession;
