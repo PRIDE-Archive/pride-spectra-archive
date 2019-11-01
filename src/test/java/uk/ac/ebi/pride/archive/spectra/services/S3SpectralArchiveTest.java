@@ -20,9 +20,7 @@ import uk.ac.ebi.pride.tools.mgf_parser.MgfFile;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
@@ -61,7 +59,7 @@ public class S3SpectralArchiveTest {
                 intensities[count] = (Double) entry.getValue();
                 count++;
             }
-            List<CvParam> params = new ArrayList<>();
+            Set<CvParam> params = new HashSet<>();
             params.addAll(spectrum.getAdditional().getCvParams()
                             .stream()
                             .map(x-> new CvParam(x.getCv(),x.getAccession(), x.getName(),x.getValue()))
