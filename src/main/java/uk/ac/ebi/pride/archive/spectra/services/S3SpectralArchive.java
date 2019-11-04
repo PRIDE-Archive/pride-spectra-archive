@@ -1,10 +1,8 @@
 package uk.ac.ebi.pride.archive.spectra.services;
 
 
-
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
-import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import com.fasterxml.jackson.core.JsonParser;
@@ -21,7 +19,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,21 +40,14 @@ public class S3SpectralArchive implements ISpectralArchive {
     @Value("${spectra.archive.s3.bucketname}")
     String bucketName;
 
-    public PSMProvider writePSM(String usi, PSMProvider psm) throws IOException {
+    public PSMProvider writePSM(String usi, PSMProvider psm) throws Exception {
 
-        try {
-            if (psm.getUsi().startsWith(Constants.SPECTRUM_S3_HEADER)) {
-                String jsonStr = (new ObjectMapper()).writeValueAsString(psm);
-                PutObjectResult result = s3Client.putObject(bucketName, usi, jsonStr);
-                log.info(" - " + usi + "  " + "(size = " + result.getMetadata().getContentLength() + ")");
-            } else {
-                log.error("The spectrum usi should be started with prefix -- " + Constants.SPECTRUM_S3_HEADER);
-            }
-
-
-        } catch (SdkClientException e) {
-            e.printStackTrace();
-            log.error(e.getMessage());
+        if (psm.getUsi().startsWith(Constants.SPECTRUM_S3_HEADER)) {
+            String jsonStr = (new ObjectMapper()).writeValueAsString(psm);
+            PutObjectResult result = s3Client.putObject(bucketName, usi, jsonStr);
+            log.info(" - " + usi + "  " + "(size = " + result.getMetadata().getContentLength() + ")");
+        } else {
+            log.error("The spectrum usi should be started with prefix -- " + Constants.SPECTRUM_S3_HEADER);
         }
         return psm;
     }
@@ -72,8 +62,8 @@ public class S3SpectralArchive implements ISpectralArchive {
     }
 
     public void deletePSM(String usi) {
-        if(usi.contains(Constants.SPECTRUM_S3_HEADER)){
-            if(usi.startsWith(bucketName+"/"))
+        if (usi.contains(Constants.SPECTRUM_S3_HEADER)) {
+            if (usi.startsWith(bucketName + "/"))
                 usi = usi.replace(bucketName + "/", "");
             s3Client.deleteObject(new DeleteObjectRequest(bucketName, usi));
         }
@@ -92,6 +82,7 @@ public class S3SpectralArchive implements ISpectralArchive {
 
     /**
      * This method is really expensive, because it will try to retrieve all the objects from the S3
+     *
      * @return List of all objects in the S3
      */
     private List<S3ObjectSummary> getBucketObjectSummaries() {
@@ -130,12 +121,12 @@ public class S3SpectralArchive implements ISpectralArchive {
         return s3ObjectSummaries;
     }
 
-    public List<String> getPsmsKeys(){
+    public List<String> getPsmsKeys() {
         return getBucketObjectSummaries().stream().map(S3ObjectSummary::getKey).collect(Collectors.toList());
     }
 
     @Deprecated
-    public void deletePsms(List<String> usis){
+    public void deletePsms(List<String> usis) {
 
         // Upload three sample objects.
         ArrayList<DeleteObjectsRequest.KeyVersion> keys = new ArrayList<DeleteObjectsRequest.KeyVersion>();

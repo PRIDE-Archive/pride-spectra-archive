@@ -16,5 +16,5 @@ import java.io.IOException;
  */
 public interface ISpectralArchive {
 
-	PSMProvider writePSM(String usi, PSMProvider psm) throws IOException;
+	PSMProvider writePSM(String usi, PSMProvider psm) throws Exception;
 }

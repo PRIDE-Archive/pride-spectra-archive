@@ -49,7 +49,7 @@ public class S3SpectralArchiveTest {
 
     @Test
     @Ignore
-    public void writePSM() throws IOException {
+    public void writePSM() throws Exception {
         for(Spectrum spectrum: mgfFile.getMs2QueryIterator()){
             Double[] masses = new Double[spectrum.getPeakList().size()];
             Double[] intensities = new Double[spectrum.getPeakList().size()];
