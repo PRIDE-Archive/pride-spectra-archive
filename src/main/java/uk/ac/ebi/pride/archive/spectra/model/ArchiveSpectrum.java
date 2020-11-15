@@ -24,6 +24,9 @@ public class ArchiveSpectrum implements PSMProvider {
     @JsonProperty("usi")
     String usi;
 
+    @JsonProperty("spectraUsi")
+    String spectraUsi;
+
     @JsonProperty("projectAccession")
     String projectAccession;
 
@@ -88,8 +91,9 @@ public class ArchiveSpectrum implements PSMProvider {
 
     public ArchiveSpectrum() { }
 
-    public ArchiveSpectrum(String usi, String projectAccession, String assayAccession, String spectrumFile, String sourceID, String spectrumTitle, Double[] masses, Double[] intensities, Integer numPeaks, Integer msLevel, Integer precursorCharge, Double precursorMz, Double retentionTime, Set<CvParam> properties, String peptideSequence, Integer missedCleavages, Collection<IdentifiedModification> modifications, List<String> annotations, Boolean isDecoy, Set<CvParam> qualityEstimationMethods, Boolean isValid) {
+    public ArchiveSpectrum(String usi, String spectraUsi, String projectAccession, String assayAccession, String spectrumFile, String sourceID, String spectrumTitle, Double[] masses, Double[] intensities, Integer numPeaks, Integer msLevel, Integer precursorCharge, Double precursorMz, Double retentionTime, Set<CvParam> properties, String peptideSequence, Integer missedCleavages, Collection<IdentifiedModification> modifications, List<String> annotations, Boolean isDecoy, Set<CvParam> qualityEstimationMethods, Boolean isValid) {
         this.usi = usi;
+        this.spectraUsi = spectraUsi;
         this.projectAccession = projectAccession;
         this.assayAccession = assayAccession;
         this.spectrumFile = spectrumFile;
