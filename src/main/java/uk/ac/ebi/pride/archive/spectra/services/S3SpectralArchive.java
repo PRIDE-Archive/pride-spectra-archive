@@ -8,6 +8,7 @@ import com.amazonaws.services.s3.model.*;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -42,9 +43,12 @@ public class S3SpectralArchive implements ISpectralArchive {
 
     public PSMProvider writePSM(String usi, PSMProvider psm) throws Exception {
 
+
         if (psm.getUsi().startsWith(Constants.SPECTRUM_S3_HEADER)) {
+            String [] usiParams = usi.split(":");
             String jsonStr = (new ObjectMapper()).writeValueAsString(psm);
-            PutObjectResult result = s3Client.putObject(bucketName, usi, jsonStr);
+            PutObjectResult result = s3Client.putObject(bucketName, usiParams[1]+"/"+usiParams[2]+
+            "/"+ DigestUtils.sha256Hex(usi), jsonStr);
             log.info(" - " + usi + "  " + "(size = " + result.getMetadata().getContentLength() + ")");
         } else {
             log.error("The spectrum usi should be started with prefix -- " + Constants.SPECTRUM_S3_HEADER);
@@ -53,7 +57,9 @@ public class S3SpectralArchive implements ISpectralArchive {
     }
 
     public PSMProvider readPSM(String usi) throws IOException {
-        S3Object fullObject = s3Client.getObject(new GetObjectRequest(bucketName, usi));
+        String [] usiParams = usi.split(":");
+        S3Object fullObject = s3Client.getObject(new GetObjectRequest(bucketName, usiParams[1]+"/"+usiParams[2]+
+                "/"+ DigestUtils.sha256Hex(usi)));
         S3ObjectInputStream content = fullObject.getObjectContent();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
