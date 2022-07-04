@@ -45,10 +45,8 @@ public class S3SpectralArchive implements ISpectralArchive {
 
 
         if (psm.getUsi().startsWith(Constants.SPECTRUM_S3_HEADER)) {
-            String [] usiParams = usi.split(":");
             String jsonStr = (new ObjectMapper()).writeValueAsString(psm);
-            PutObjectResult result = s3Client.putObject(bucketName, usiParams[1]+"/"+usiParams[2]+
-            "/"+ DigestUtils.sha256Hex(usi), jsonStr);
+            PutObjectResult result = s3Client.putObject(bucketName, getKeyFromUsi(usi), jsonStr);
             log.info(" - " + usi + "  " + "(size = " + result.getMetadata().getContentLength() + ")");
         } else {
             log.error("The spectrum usi should be started with prefix -- " + Constants.SPECTRUM_S3_HEADER);
@@ -57,9 +55,7 @@ public class S3SpectralArchive implements ISpectralArchive {
     }
 
     public PSMProvider readPSM(String usi) throws IOException {
-        String [] usiParams = usi.split(":");
-        S3Object fullObject = s3Client.getObject(new GetObjectRequest(bucketName, usiParams[1]+"/"+usiParams[2]+
-                "/"+ DigestUtils.sha256Hex(usi)));
+        S3Object fullObject = s3Client.getObject(new GetObjectRequest(bucketName,getKeyFromUsi(usi)));
         S3ObjectInputStream content = fullObject.getObjectContent();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
@@ -71,8 +67,14 @@ public class S3SpectralArchive implements ISpectralArchive {
         if (usi.contains(Constants.SPECTRUM_S3_HEADER)) {
             if (usi.startsWith(bucketName + "/"))
                 usi = usi.replace(bucketName + "/", "");
-            s3Client.deleteObject(new DeleteObjectRequest(bucketName, usi));
+            s3Client.deleteObject(new DeleteObjectRequest(bucketName, getKeyFromUsi(usi)));
         }
+    }
+    
+    public static String getKeyFromUsi(String usi){
+        String [] usiParams = usi.split(":");
+        return usiParams[1]+"/"+usiParams[2]+ "/"+ DigestUtils.sha256Hex(usi);
+
     }
 
     private String getStringObject(S3ObjectInputStream binaryObject) throws IOException {
