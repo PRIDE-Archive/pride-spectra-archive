@@ -43,7 +43,7 @@ public class AWS3Configuration {
 //                .build();
 
         return  AmazonS3ClientBuilder.standard()
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(s3url + bucketName, region))
+                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(s3url, region))
                 .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
                 .withPathStyleAccessEnabled(true)
                 .build();
