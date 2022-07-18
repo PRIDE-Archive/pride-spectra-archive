@@ -3,7 +3,7 @@
 
 	<groupId>uk.ac.ebi.pride.archive</groupId>
 	<artifactId>pride-spectra-archive</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>spectral-archive</name>
 
