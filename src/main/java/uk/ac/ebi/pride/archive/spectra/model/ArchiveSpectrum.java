@@ -8,10 +8,12 @@ import lombok.Builder;
 import lombok.Data;
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PSMProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.ptm.IdentifiedModification;
-import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
-import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
+import uk.ac.ebi.pride.archive.dataprovider.param.Param;
+import uk.ac.ebi.pride.archive.dataprovider.param.ParamProvider;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @JsonRootName("ArchiveSpectrum")
@@ -61,12 +63,15 @@ public class ArchiveSpectrum implements PSMProvider {
     Double retentionTime;
 
     @JsonProperty("properties")
-    Set<CvParam> properties;
+    Set<Param> properties;
 
     /** Interpretation of the Spectra **/
 
     @JsonProperty("peptideSequence")
     String peptideSequence;
+
+    @JsonProperty("proteinAccessions")
+    List<String> proteinAccessions;
 
     @JsonProperty("missedCleavages")
     Integer missedCleavages;
@@ -81,14 +86,23 @@ public class ArchiveSpectrum implements PSMProvider {
     Boolean isDecoy;
 
     @JsonProperty("qualityEstimationMethods")
-    private Set<CvParam> qualityEstimationMethods;
+    private Set<Param> qualityEstimationMethods;
 
     @JsonProperty("isValid")
     private Boolean isValid;
 
+    @JsonProperty("scores")
+    private Set<Param> scores;
+
+    @JsonProperty("bestSearhScore")
+    Param bestSearchEngineScore;
+
+    @JsonProperty("sample_properties")
+    private Set<Param> sampleProperties;
+
     public ArchiveSpectrum() { }
 
-    public ArchiveSpectrum(String usi, String projectAccession, String assayAccession, String spectrumFile, String sourceID, String spectrumTitle, Double[] masses, Double[] intensities, Integer numPeaks, Integer msLevel, Integer precursorCharge, Double precursorMz, Double retentionTime, Set<CvParam> properties, String peptideSequence, Integer missedCleavages, Collection<IdentifiedModification> modifications, List<String> annotations, Boolean isDecoy, Set<CvParam> qualityEstimationMethods, Boolean isValid) {
+    public ArchiveSpectrum(String usi, String projectAccession, String assayAccession, String spectrumFile, String sourceID, String spectrumTitle, Double[] masses, Double[] intensities, Integer numPeaks, Integer msLevel, Integer precursorCharge, Double precursorMz, Double retentionTime, Set<Param> properties, String peptideSequence, List<String> proteinAccessions, Integer missedCleavages, Collection<IdentifiedModification> modifications, List<String> annotations, Boolean isDecoy, Set<Param> qualityEstimationMethods, Boolean isValid, Set<Param> scores, Param bestSearchEngineScore, Set<Param> sampleProperties) {
         this.usi = usi;
         this.projectAccession = projectAccession;
         this.assayAccession = assayAccession;
@@ -104,18 +118,22 @@ public class ArchiveSpectrum implements PSMProvider {
         this.retentionTime = retentionTime;
         this.properties = properties;
         this.peptideSequence = peptideSequence;
+        this.proteinAccessions = proteinAccessions;
         this.missedCleavages = missedCleavages;
         this.modifications = modifications;
         this.annotations = annotations;
         this.isDecoy = isDecoy;
         this.qualityEstimationMethods = qualityEstimationMethods;
         this.isValid = isValid;
+        this.scores = scores;
+        this.bestSearchEngineScore = bestSearchEngineScore;
+        this.sampleProperties = sampleProperties;
     }
 
     @Override
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public Collection<? extends String> getAdditionalAttributesStrings() {
-        return properties.stream().map(CvParam::getName).collect(Collectors.toList());
+        return properties.stream().map(Param::getName).collect(Collectors.toList());
     }
 
     @Override
@@ -135,10 +153,8 @@ public class ArchiveSpectrum implements PSMProvider {
         return isDecoy;
     }
 
-
-    @Override
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    public Collection<? extends CvParamProvider> getAttributes() {
+    public Collection<? extends ParamProvider> getAttributes() {
         return properties;
     }
 
@@ -146,6 +162,4 @@ public class ArchiveSpectrum implements PSMProvider {
     public Boolean isValid() {
         return isValid;
     }
-
-
 }

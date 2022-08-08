@@ -3,7 +3,7 @@
 
 	<groupId>uk.ac.ebi.pride.archive</groupId>
 	<artifactId>pride-spectra-archive</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.4-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>spectral-archive</name>
 
@@ -19,7 +19,7 @@
             <name>Yasset Perez-Riverol</name>
             <email>yperez@ebi.ac.uk</email>
             <organization>Proteomics Services Team - EBI</organization>
-            <organizationUrl>http://www.ebi.ac.uk/proteomics</organizationUrl>
+            <organizationUrl>https://www.ebi.ac.uk/proteomics</organizationUrl>
             <timezone>0</timezone>
         </developer>
 	</developers>
@@ -31,7 +31,7 @@
         <jmztab.version>3.0.8</jmztab.version>
         <px.submission.core.version>2.0.18</px.submission.core.version>
         <uk.ac.ebi.pride.archive.repo.version>1.0.3-SNAPSHOT</uk.ac.ebi.pride.archive.repo.version>
-        <uk.ac.ebi.pride.archive.data-provider.version>1.0.1-SNAPSHOT</uk.ac.ebi.pride.archive.data-provider.version>
+        <uk.ac.ebi.pride.archive.data-provider.version>1.0.2-SNAPSHOT</uk.ac.ebi.pride.archive.data-provider.version>
         <uk.ac.ebi.pride.architectural-pride-tdd.version>1.0.4-SNAPSHOT</uk.ac.ebi.pride.architectural-pride-tdd.version>
         <uk.ac.ebi.pride.architectural-pride-spring.version>1.0.0-SNAPSHOT</uk.ac.ebi.pride.architectural-pride-spring.version>
         <uk.ac.ebi.pride.archive.utilities.version>2.0.19-SNAPSHOT</uk.ac.ebi.pride.archive.utilities.version>
@@ -185,21 +185,21 @@
     <repositories>
         <repository>
             <id>nexus-ebi-release-repo</id>
-            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-repo/</url>
+            <url>https://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-repo/</url>
         </repository>
         <repository>
             <id>nexus-ebi-snapshot-repo</id>
-            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-snapshots/</url>
+            <url>https://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-snapshots/</url>
         </repository>
         <repository>
             <id>pst-release</id>
             <name>EBI Nexus Repository</name>
-            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-release</url>
+            <url>https://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-release</url>
         </repository>
         <repository>
             <id>pst-snapshots</id>
             <name>EBI Nexus Snapshots Repository</name>
-            <url>http://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-snapshots</url>
+            <url>https://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-snapshots</url>
         </repository>
     </repositories>
 

@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PSMProvider;
-import uk.ac.ebi.pride.archive.dataprovider.param.CvParam;
+import uk.ac.ebi.pride.archive.dataprovider.param.Param;
 import uk.ac.ebi.pride.archive.spectra.configs.AWS3Configuration;
 import uk.ac.ebi.pride.archive.spectra.model.ArchiveSpectrum;
 import uk.ac.ebi.pride.tools.jmzreader.model.Spectrum;
@@ -59,10 +59,10 @@ public class S3SpectralArchiveTest {
                 intensities[count] = (Double) entry.getValue();
                 count++;
             }
-            Set<CvParam> params = new HashSet<>();
+            Set<Param> params = new HashSet<>();
             params.addAll(spectrum.getAdditional().getCvParams()
                             .stream()
-                            .map(x-> new CvParam(x.getCv(),x.getAccession(), x.getName(),x.getValue()))
+                            .map(x-> new Param(x.getName(),x.getValue()))
                     .collect(Collectors.toList())
             );
 
