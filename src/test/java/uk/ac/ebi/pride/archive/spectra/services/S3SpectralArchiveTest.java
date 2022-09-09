@@ -1,19 +1,11 @@
 package uk.ac.ebi.pride.archive.spectra.services;
 
-import lombok.extern.slf4j.Slf4j;
-import org.junit.Ignore;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
-import uk.ac.ebi.pride.archive.spectra.configs.AWS3Configuration;
-
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = {AWS3Configuration.class})
-@Slf4j
-@TestPropertySource(locations = "classpath:test-application.properties")
-@Deprecated
-@Ignore
+//@RunWith(SpringRunner.class)
+//@SpringBootTest(classes = {AWS3Configuration.class})
+//@Slf4j
+//@TestPropertySource(locations = "classpath:test-application.properties")
+//@Deprecated
+//@Ignore
 public class S3SpectralArchiveTest {
 
 //    private MgfFile mgfFile = new MgfFile();
