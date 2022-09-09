@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PSMProvider;
-import uk.ac.ebi.pride.archive.spectra.model.ArchiveSpectrum;
+import uk.ac.ebi.pride.archive.dataprovider.data.spectra.ArchiveSpectrum;
 import uk.ac.ebi.pride.archive.spectra.utils.Constants;
 
 import java.io.BufferedReader;
