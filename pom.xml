@@ -3,15 +3,9 @@
 
 	<groupId>uk.ac.ebi.pride.archive</groupId>
 	<artifactId>pride-spectra-archive</artifactId>
-	<version>0.0.4-SNAPSHOT</version>
+	<version>0.0.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>spectral-archive</name>
-
-    <parent>
-        <groupId>org.uk.ac.ebi.pride.architectural</groupId>
-        <artifactId>pride-spring</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-    </parent>
 
 	<developers>
 		 <developer>
@@ -28,63 +22,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <jmztab.version>3.0.8</jmztab.version>
-        <px.submission.core.version>2.0.18</px.submission.core.version>
-        <uk.ac.ebi.pride.archive.repo.version>1.0.3-SNAPSHOT</uk.ac.ebi.pride.archive.repo.version>
-        <uk.ac.ebi.pride.archive.data-provider.version>1.0.2-SNAPSHOT</uk.ac.ebi.pride.archive.data-provider.version>
-        <uk.ac.ebi.pride.architectural-pride-tdd.version>1.0.4-SNAPSHOT</uk.ac.ebi.pride.architectural-pride-tdd.version>
-        <uk.ac.ebi.pride.architectural-pride-spring.version>1.0.0-SNAPSHOT</uk.ac.ebi.pride.architectural-pride-spring.version>
-        <uk.ac.ebi.pride.archive.utilities.version>2.0.19-SNAPSHOT</uk.ac.ebi.pride.archive.utilities.version>
-        <archive.integration.version>0.0.3-SNAPSHOT</archive.integration.version>
-        <uk.ac.ebi.pride.tools-jmzreader.version>2.0.6</uk.ac.ebi.pride.tools-jmzreader.version>
+        <uk.ac.ebi.pride.archive.data-provider.version>1.0.3-SNAPSHOT</uk.ac.ebi.pride.archive.data-provider.version>
         <maven.test.skip>true</maven.test.skip>
-        <pia.version>1.3.10</pia.version>
-        <aws.version>1.12.261</aws.version>
-        <jackson.version>2.13.3</jackson.version>
+        <aws.version>1.12.298</aws.version>
         <lombock.version>1.16.20</lombock.version>
     </properties>
 
     <dependencies>
-
-        <!-- Begin of the jmzReader Dependencies. MzML and Pride XML files will be parse
-          with jaxb and jmzml directly in order to keep more matadata -->
-        <dependency>
-            <groupId>uk.ac.ebi.pride.tools</groupId>
-            <artifactId>jmzreader</artifactId>
-            <version>${uk.ac.ebi.pride.tools-jmzreader.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>uk.ac.ebi.pride.architectural</groupId>
-            <artifactId>pride-spring</artifactId>
-            <version>${uk.ac.ebi.pride.architectural-pride-spring.version}</version>
-            <type>pom</type>
-        </dependency>
-
-        <!-- TDD -->
-        <dependency>
-            <groupId>uk.ac.ebi.pride.architectural</groupId>
-            <artifactId>pride-tdd</artifactId>
-            <version>${uk.ac.ebi.pride.architectural-pride-tdd.version}</version>
-            <type>pom</type>
-            <scope>test</scope>
-        </dependency>
 
         <dependency>
             <groupId>com.amazonaws</groupId>
@@ -92,17 +36,10 @@
             <version>${aws.version}</version>
         </dependency>
 
-        <!-- Data provider -->
         <dependency>
             <groupId>uk.ac.ebi.pride.archive</groupId>
             <artifactId>data-provider-api</artifactId>
             <version>${uk.ac.ebi.pride.archive.data-provider.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>uk.ac.ebi.pride.utilities</groupId>
-            <artifactId>pride-utilities</artifactId>
-            <version>${uk.ac.ebi.pride.archive.utilities.version}</version>
         </dependency>
 
         <dependency>
@@ -114,23 +51,16 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <version>2.0.1.RELEASE</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.batch</groupId>
             <artifactId>spring-batch-test</artifactId>
+            <version>2.0.1.RELEASE</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.194</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.6</version>
-        </dependency>
+
 
     </dependencies>
 
@@ -158,29 +88,43 @@
 
         <plugins>
             <plugin>
-                <artifactId>maven-site-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-deploy-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
-                    <includes>
-                        <include>**/*Tests.java</include>
-                        <include>**/*Test.java</include>
-                    </includes>
-                    <junitArtifactName>junit:junit</junitArtifactName>
-                    <skipTests>true</skipTests>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
+            <!-- Special setup for using the maven source plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>pst-release</id>
+            <name>EBI Nexus Repository</name>
+            <url>https://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-release</url>
+        </repository>
+        <snapshotRepository>
+            <id>pst-snapshots</id>
+            <name>EBI Nexus Snapshots Repository</name>
+            <url>https://www.ebi.ac.uk/Tools/maven/repos/content/repositories/pst-snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <repositories>
         <repository>
