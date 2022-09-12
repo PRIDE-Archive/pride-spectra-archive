@@ -12,7 +12,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import uk.ac.ebi.pride.archive.dataprovider.data.peptide.PSMProvider;
 import uk.ac.ebi.pride.archive.dataprovider.data.spectra.ArchiveSpectrum;
 import uk.ac.ebi.pride.archive.spectra.utils.Constants;
 
@@ -41,9 +40,7 @@ public class S3SpectralArchive implements ISpectralArchive {
     @Value("${spectra.archive.s3.bucketname}")
     String bucketName;
 
-    public PSMProvider writePSM(String usi, PSMProvider psm) throws Exception {
-
-
+    public ArchiveSpectrum writePSM(String usi, ArchiveSpectrum psm) throws Exception {
         if (psm.getUsi().startsWith(Constants.SPECTRUM_S3_HEADER)) {
             String jsonStr = (new ObjectMapper()).writeValueAsString(psm);
             PutObjectResult result = s3Client.putObject(bucketName, getKeyFromUsi(usi), jsonStr);
@@ -54,7 +51,7 @@ public class S3SpectralArchive implements ISpectralArchive {
         return psm;
     }
 
-    public PSMProvider readPSM(String usi) throws IOException {
+    public ArchiveSpectrum readPSM(String usi) throws IOException {
         S3Object fullObject = s3Client.getObject(new GetObjectRequest(bucketName,getKeyFromUsi(usi)));
         S3ObjectInputStream content = fullObject.getObjectContent();
         ObjectMapper objectMapper = new ObjectMapper();
