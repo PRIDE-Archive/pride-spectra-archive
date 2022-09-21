@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.sync.ResponseTransformer;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import uk.ac.ebi.pride.archive.dataprovider.data.spectra.ArchiveSpectrum;
 
 import java.io.BufferedReader;
@@ -50,19 +51,40 @@ public class S3SpectralArchive {
 
     public ArchiveSpectrum readPSM(String filePath, String usi) throws IOException {
         GetObjectRequest request = GetObjectRequest.builder().bucket(bucketName).key(filePath).build();
+        InputStream inputStream;
+        try {
+            inputStream = s3Client.getObject(request, ResponseTransformer.toBytes()).asInputStream();
+        } catch (NoSuchKeyException ex) {
+            return null;
+        }
+        BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+        String contentStr;
+        while ((contentStr = in.readLine()) != null) {
+            if (contentStr.startsWith("{\"usi\":\"" + usi + "\",")) { //{"usi":"mzspec:PRD000902:Rice_leaf_24h_phospho_test2:scan:3576:NN[UNIMOD:7]GSSIGS[UNIMOD:21]PGPGR/2"
+//                System.out.printf(contentStr);
+                ArchiveSpectrum archiveSpectrum = objectMapper.readValue(contentStr, ArchiveSpectrum.class);
+                return archiveSpectrum;
+            }
+        }
+        return null;
+    }
+
+    public ArchiveSpectrum readZippedPSM(String filePath, String usi) throws IOException {
+        GetObjectRequest request = GetObjectRequest.builder().bucket(bucketName).key(filePath).build();
         InputStream inputStream = s3Client.getObject(request, ResponseTransformer.toBytes()).asInputStream();
         final GZIPInputStream zipInputStream;
-            zipInputStream = new GZIPInputStream(inputStream);;
-            BufferedReader in = new BufferedReader(new InputStreamReader(zipInputStream));
-            String contentStr;
-            while ((contentStr = in.readLine()) != null) {
-                if (contentStr.startsWith("{\"usi\":\""+usi +"\",")) { //{"usi":"mzspec:PRD000902:Rice_leaf_24h_phospho_test2:scan:3576:NN[UNIMOD:7]GSSIGS[UNIMOD:21]PGPGR/2"
-                    System.out.printf(contentStr);
-                    ArchiveSpectrum archiveSpectrum = objectMapper.readValue(contentStr, ArchiveSpectrum.class);
-                    return archiveSpectrum;
-                }
+        zipInputStream = new GZIPInputStream(inputStream);
+        ;
+        BufferedReader in = new BufferedReader(new InputStreamReader(zipInputStream));
+        String contentStr;
+        while ((contentStr = in.readLine()) != null) {
+            if (contentStr.startsWith("{\"usi\":\"" + usi + "\",")) { //{"usi":"mzspec:PRD000902:Rice_leaf_24h_phospho_test2:scan:3576:NN[UNIMOD:7]GSSIGS[UNIMOD:21]PGPGR/2"
+                System.out.printf(contentStr);
+                ArchiveSpectrum archiveSpectrum = objectMapper.readValue(contentStr, ArchiveSpectrum.class);
+                return archiveSpectrum;
             }
-            return null;
+        }
+        return null;
     }
 
 //    public void deletePSM(String usi) {
