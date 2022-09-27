@@ -11,6 +11,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import uk.ac.ebi.pride.archive.dataprovider.data.spectra.ArchiveSpectrum;
+import uk.ac.ebi.pride.archive.dataprovider.data.spectra.BinaryArchiveSpectrum;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,9 +62,8 @@ public class S3SpectralArchive {
         String contentStr;
         while ((contentStr = in.readLine()) != null) {
             if (contentStr.startsWith("{\"usi\":\"" + usi + "\",")) { //{"usi":"mzspec:PRD000902:Rice_leaf_24h_phospho_test2:scan:3576:NN[UNIMOD:7]GSSIGS[UNIMOD:21]PGPGR/2"
-//                System.out.printf(contentStr);
-                ArchiveSpectrum archiveSpectrum = objectMapper.readValue(contentStr, ArchiveSpectrum.class);
-                return archiveSpectrum;
+                BinaryArchiveSpectrum binaryArchiveSpectrum = objectMapper.readValue(contentStr, BinaryArchiveSpectrum.class);
+                return new ArchiveSpectrum(binaryArchiveSpectrum);
             }
         }
         return null;
